@@ -1,0 +1,144 @@
+.myrightbar {
+    flex: 4;
+    height: calc(100vh - 50px);
+    position: sticky;
+    overflow-y: scroll;
+    top: 50px;
+}
+
+/* ::-webkit-scrollbar{
+    width: 7px;
+}
+::-webkit-scrollbar-track{
+    background-color: white;
+}
+::-webkit-scrollbar-track{
+    background-color: rgb(199, 191, 191);
+    opacity: 0.4;
+} */
+
+
+
+.rightbar-wrapper {
+    padding: 20px 5px 20px 5px;
+}
+
+.birthday-container {
+    display: flex;
+    align-items: center;
+}
+
+.birthday-image {
+    width: 40px;
+    height: 40px;
+    margin-right: 10px;
+    margin-left: 3px;
+}
+
+.birthday-text {
+    font-weight: 300;
+    font-size: 15px;
+}
+
+.rightbar-ad {
+    width: 100%;
+    border-radius: 10px;
+    display: block;
+    margin: 20px auto;
+
+}
+
+
+.online-friends{
+    margin-bottom: 20px;
+}
+
+.rightbar-friendlist {
+    padding: 0;
+    margin: 0;
+    list-style: none;
+}
+
+.rightbar-friend {
+    display: flex;
+    align-items: center;
+    margin-bottom: 15px;
+}
+
+
+.rightbar-profileimage-container {
+    margin-right: 10px;
+    position: relative;
+}
+
+
+.rightbar-profile-image {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+
+.rightbar-online {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background-color: green;
+    position: absolute;
+   top: -2px;
+   right: 0;
+   border: 2px solid white;
+}
+
+
+.rightbar-username{
+    font-weight: 500;
+}
+
+
+.rightbar-title{
+    font-size: 18px;
+    font-weight: 500;
+    margin-bottom: 10px;
+}
+
+.rightbar-info{
+    margin-bottom: 30px;
+}
+
+.rightbar-info-item{
+    margin-bottom: 10px;
+}
+
+.rightbar-info-key{
+    font-weight: 500;
+    margin-right: 15px;
+}
+.rightbar-info-value{
+    font-weight: 300;
+    margin-right: 15px;
+}
+
+.rightbar-followings{
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+}
+.rightbar-following{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 20px;
+    cursor: pointer;
+}
+.rightbar-following-image{
+    width: 100px;
+    height: 100px;
+    object-fit: cover;
+    border-radius: 5px;
+}
+
+
+

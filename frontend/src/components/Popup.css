@@ -1,0 +1,9 @@
+.popup{
+    text-align: center;
+    z-index: 6;
+    position: absolute;
+    width: 100%;
+    top: 50%;
+    
+    
+}

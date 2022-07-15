@@ -1,0 +1,13 @@
+.down-footer{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 1rem;
+    
+}
+
+
+.down-footer a{
+  text-decoration: none;
+  font-weight: bold;
+}
