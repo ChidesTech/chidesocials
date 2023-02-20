@@ -1,0 +1,29 @@
+.add-comment-form{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    padding: 8px;
+    justify-content: center;
+    margin-top: -1.5rem;
+    gap: 10px;
+   
+}
+.add-comment-field{
+    width: 90%;
+    border-radius: 10px;
+    --webkit-box-shadow: 0 0 16px -8px rgba(0 , 0, 0, 0.68);
+   box-shadow: 0 0 16px -9px rgba(0,0,0,0.68);
+    background-color:transparent;
+    border: 1px solid rgb(182, 173, 173);
+    outline: none;
+    
+
+}
+
+.add-comment-btn{
+    width: 10%;
+}
+
+.night-mode .add-comment-field{
+    color: white;
+}

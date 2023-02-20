@@ -1,0 +1,25 @@
+.feed{
+    flex: 5.5;
+    
+}
+
+
+.people-post{
+    display: flex;
+    margin-top: 1rem;
+    font-size: 1.1rem;
+} 
+
+.people-post div{
+    flex: 1;
+    text-align: center;
+    cursor: pointer;
+    padding: .5rem;
+    border: 1px solid #198754;
+
+}
+
+.people-post-active{
+    background-color: #198754;
+    color: white;
+}

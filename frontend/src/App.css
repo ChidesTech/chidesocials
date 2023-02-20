@@ -1,0 +1,165 @@
+.header{
+    display: flex;
+    justify-content: space-between;
+    background-color: navy;
+    padding: 1rem 2rem;
+    font-size: 1.4rem;
+}
+
+body{
+    /* background-color: black; */
+    /* color: white !important;  */
+  font-family: "Montserrat";
+
+}
+
+a{
+    text-decoration: none;
+}
+
+.header a{
+    color: white;
+    text-decoration: none;
+}
+
+.header div{
+    display: flex;
+    gap: 1rem
+}
+
+.home-container{
+    display: flex;
+    width: 100%;
+}
+
+
+.menu-page{
+    flex: 5.5;
+}
+
+.btn-outline-green{
+    background-color: white;
+    color: #198754;
+    border: 1px solid #198754;
+}
+.btn-outline-green:hover{
+    background-color: #198754;
+    color: white;
+}
+.btn-green{
+    background-color: #198754;
+    color: white;
+    border: 1px solid #198754;
+
+}
+.btn-green:hover{
+    background-color: white;
+    color: #198754;
+    border: 1px solid #198754;
+}
+
+
+.main-form{
+    margin: 2rem auto;
+    max-width: 350px;
+}
+form h3{
+    text-align: center;
+    text-transform: uppercase;
+}
+
+.login-register{
+    display: flex;
+    
+}
+.login-register a{
+    padding: .2rem;
+    font-size: 1.4rem;
+    cursor: pointer;
+    text-decoration: none;
+    
+}
+
+.login-register .login{
+    width: 50%;
+    text-align: center;
+    
+}
+.login-register .register{
+    width: 50%;
+    text-align: center;
+   
+}
+
+.login-register .orange{
+    background-color: #198754;
+    color: white;
+    border: 1px solid #198754;
+}
+.login-register .orange-outline{
+    background-color: white;
+    color: #198754;
+    border: 1px solid #198754;
+}
+
+
+.btn-danger{
+    margin-right: .5rem;
+}
+
+.night-mode{
+    background-color: black;
+    color: white;
+}
+
+.night-mode .post{
+    --webkit-box-shadow: 0 0 16px -8px rgb(189, 184, 184);
+    box-shadow: 0 0 16px -8px rgb(182, 176, 176);
+}
+.light-mode{
+    color: black;
+    background-color: white;
+}
+
+.search-bar-s500{
+    border: 1px solid grey;
+    
+    width: 90%;
+}
+
+main{
+    min-height: 100vh;
+}
+
+.popup-form{
+    position:fixed;
+    z-index: 5;
+    top: 5rem;
+    width: 100%;
+    display: block;
+    left: 40%;
+}
+.bottom-margin{
+    margin-top: 5rem;
+}
+
+
+
+
+@media(max-width : 450px){
+    html{
+        font-size: 70%;
+    }
+
+    .logo{
+        font-size: 18px !important;
+    }
+   .form{
+    max-width: 320px;
+
+   } 
+
+
+
+
+}
