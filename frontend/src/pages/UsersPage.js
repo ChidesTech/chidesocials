@@ -143,13 +143,13 @@ export default function Userspage() {
                     <hr />
                     <ul className="sidebar-friend-list">
                         {loading ? <li>Fetching Users ...</li> :
-                        error ? <div className="alert alert-danger p-2 m-2">{error}</div> :(
+                        error ? <div className="alert alert-danger p-2 m-2 ">{error}</div> :(
 
-                            users.length === 0 ? <div className="alert alert-danger p-2 m-2">No User Found</div> :
+                            users.length === 0 ? <div className="alert alert-danger p-2 ">No User Found</div> :
                             users.map(user => {
                                     if (user._id !== userId) {
-                                        return <li key={user._id} className="sidebar-friend">
-                                            <Link style={{ textDecoration: "none", color: "black" }} to={`/user/${user._id}`}>
+                                        return <li key={user._id} className="sidebar-friend mt-3">
+                                            <Link className="flex" style={{ textDecoration: "none", color: "black" }} to={`/user/${user._id}`}>
                                                 <img src={user.profilePicture || "/images/profile.png"} alt="" className="sidebar-friend-image" />
                                                 <span className="sidebar-friend-name">{user.username}</span>
                                             </Link>
@@ -180,7 +180,7 @@ export default function Userspage() {
             </div>
 
         </main>
-        <Footer />
+        {/* <Footer /> */}
         <Bottombar />
 
     </>

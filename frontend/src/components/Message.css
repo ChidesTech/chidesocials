@@ -18,12 +18,16 @@
 }
 
 .message-text{
-    padding: 10px;
-    border-radius: 20px;
+    padding: 5px;
+    border-radius: 15px;
     background-color: #198754;
     color: white;
     max-width: 300px;
+
+  
 }
+
+
 
 
 .message-bottom{

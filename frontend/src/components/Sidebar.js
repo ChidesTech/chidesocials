@@ -187,7 +187,7 @@ export default function Sidebar() {
                  users.map(user => {
                     if (user._id !== userId) {
                         return <li key={user._id} className="sidebar-friend">
-                            <Link style={{textDecoration:"none", color: "black"}} to={`/user/${user._id}`}>
+                            <Link className="flex align-items-center" style={{textDecoration:"none", color: "black"}} to={`/user/${user._id}`}>
                             <img src={user.profilePicture || "/images/profile.png"} alt="" className="sidebar-friend-image" />
                             <span className="sidebar-friend-name">{user.username}</span>
                             </Link>

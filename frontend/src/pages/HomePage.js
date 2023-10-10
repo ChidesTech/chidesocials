@@ -22,7 +22,7 @@ export default function HomePage(props){
    return (<>
    <Header />
 
-   <main>
+   <main style={{margin : 0, padding : 0}}>
 
   
    <div className="home-container" style={{marginTop: "3rem"}}>
@@ -33,7 +33,7 @@ export default function HomePage(props){
 
    </div>
    </main>
-   <Footer></Footer>
+   {/* <Footer></Footer> */}
 
    <Bottombar/>
    </>

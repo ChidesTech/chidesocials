@@ -48,7 +48,7 @@ export default function Conversation({ conversation, currentUser }) {
         getFriend(friendId);
     }, [conversation, currentUser]);
     return <div className="conversation">
-        <img src={friend && friend.profilePicture || "/images/profile.png"} alt="" className="conversation-image" />
+        <img src={friend?.profilePicture || "/images/profile.png"} alt="" className="conversation-image" />
         <div>
             <span className="conversation-name">{friend && friend.username}</span>
             <p >{messages.length > 0 && (messages.length > 0 && (messages[messages.length - 1].text).substr(0, 38).length > 35) ?

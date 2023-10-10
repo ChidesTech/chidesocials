@@ -28,8 +28,6 @@ export default function MyPage(props) {
             setFollowers(data.followers);
             setFollowings(data.followings);
             setPhotos(data.photos);
-           
-            
         } catch (error) {
             error.response && error.response.data.message
             ? Swal.fire(error.response.data.message)

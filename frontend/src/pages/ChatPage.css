@@ -1,7 +1,7 @@
 .chat{
-    height: calc(100vh - 70px);
+    height: calc(100vh);
     display: flex;
-    margin-top: 50px;
+   
 }
 
 
@@ -63,11 +63,11 @@
 
 .chat-message-input{
     width: 85%;
-    height: 90px;
-    padding: 10px;
+    height: 60px;
     border: 1px solid #198754;
-    border-radius: 1rem;
-    background-color:transparent;
+    border-radius: .5rem .1rem .1rem .5rem;
+    background-color:transparent; 
+    outline: none !important;
 }
 
 .night-mode .chat-message-input{

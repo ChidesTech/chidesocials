@@ -24,7 +24,7 @@ export default function Message({ mine, message , friend}) {
             }
              
 
-            <img src={mine ? userInfo.profilePicture : friend.profilePicture} alt="" className="message-image" />
+            <img src={mine ? userInfo?.profilePicture : friend?.profilePicture} alt="" className="message-image" />
             <p className="message-text">{message.text}</p>
            
 
@@ -43,7 +43,7 @@ export default function Message({ mine, message , friend}) {
       }
 
         </div>
-        <div className="message-bottom">
+        <div className="message-bottom mt-1 mb-4">
             {format(message.createdAt)}
         </div>
     </div>

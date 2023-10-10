@@ -3,7 +3,7 @@ import "./Post.css";
 import http from "../http-common";
 import { Link } from "react-router-dom";
 import Swal from "sweetalert2";
-import {format} from "timeago.js";
+import { format } from "timeago.js";
 import { useState } from "react";
 const swalWithBootstrapButtons = Swal.mixin({
     customClass: {
@@ -21,8 +21,8 @@ export default function Post({ _id, image, desc, username, postUserId, profilePi
     }
     const [isLiked, setIsLiked] = useState(likers.includes(userId));
     const [isDisliked, setIsDisliked] = useState(dislikers.includes(userId));
-    const [postLikes , setPostLikes] = useState(likes);
-    const [postDislikes , setPostDislikes] = useState(dislikes);
+    const [postLikes, setPostLikes] = useState(likes);
+    const [postDislikes, setPostDislikes] = useState(dislikes);
     const [showMore, setShowMore] = useState(false);
 
     async function deletePost(id) {
@@ -38,11 +38,11 @@ export default function Post({ _id, image, desc, username, postUserId, profilePi
             if (result.isConfirmed) {
                 try {
                     const { data } = await http.delete(`/posts/${userInfo._id}/${id}`,
-                    {
-                        headers: {
-                            Authorization: `Bearer ${userInfo.token}`,
+                        {
+                            headers: {
+                                Authorization: `Bearer ${userInfo.token}`,
+                            }
                         }
-                    }
                     )
                     if (data.success) {
                         swalWithBootstrapButtons.fire(
@@ -54,8 +54,8 @@ export default function Post({ _id, image, desc, username, postUserId, profilePi
                     }
                 } catch (error) {
                     error.response && error.response.data.message
-                ? Swal.fire("Error", error.response.data.message, "error")
-                : Swal.fire("Error",error.message, "error");
+                        ? Swal.fire("Error", error.response.data.message, "error")
+                        : Swal.fire("Error", error.message, "error");
                 }
 
 
@@ -82,44 +82,44 @@ export default function Post({ _id, image, desc, username, postUserId, profilePi
 
     async function thumbsUp(id, userId) {
         try {
-             await http.put(`/posts/${id}/like`, { userId } ,
-             {
-                 headers: {
-                     Authorization: `Bearer ${userInfo.token}`,
-                 }
-             })
-           .then(()=> {
-               setIsLiked(!isLiked);
-               setPostLikes(isLiked ? postLikes - 1 : postLikes + 1)
-            })
+            await http.put(`/posts/${id}/like`, { userId },
+                {
+                    headers: {
+                        Authorization: `Bearer ${userInfo.token}`,
+                    }
+                })
+                .then(() => {
+                    setIsLiked(!isLiked);
+                    setPostLikes(isLiked ? postLikes - 1 : postLikes + 1)
+                })
         } catch (error) {
             error.response && error.response.data.message
-            ? Swal.fire("Error", error.response.data.message, "error")
-            : Swal.fire("Error",error.message, "error");
+                ? Swal.fire("Error", error.response.data.message, "error")
+                : Swal.fire("Error", error.message, "error");
         }
     }
     async function thumbsDown(id, userId) {
         try {
-             await http.put(`/posts/${id}/dislike`, { userId },
-             {
-                 headers: {
-                     Authorization: `Bearer ${userInfo.token}`,
-                 }
-             })
-           .then(() => {
-               setIsDisliked(!isDisliked);
-               setPostDislikes(isDisliked ? postDislikes - 1 : postDislikes + 1)
+            await http.put(`/posts/${id}/dislike`, { userId },
+                {
+                    headers: {
+                        Authorization: `Bearer ${userInfo.token}`,
+                    }
+                })
+                .then(() => {
+                    setIsDisliked(!isDisliked);
+                    setPostDislikes(isDisliked ? postDislikes - 1 : postDislikes + 1)
 
-            });
+                });
 
         } catch (error) {
             error.response && error.response.data.message
-            ? Swal.fire("Error", error.response.data.message, "error")
-            : Swal.fire("Error",error.message, "error");
+                ? Swal.fire("Error", error.response.data.message, "error")
+                : Swal.fire("Error", error.message, "error");
         }
     }
 
-   
+
     return <>
         <div className="post">
 
@@ -127,10 +127,9 @@ export default function Post({ _id, image, desc, username, postUserId, profilePi
 
                 <div className="post-top">
                     <div className="post-top-left">
-                        <Link style={{ textDecoration: "none" }}
-                        
-                         to={`/user/${postUserId.toString()}`}
-                         >
+                        <Link className="flex align-items-center" style={{ textDecoration: "none" }}
+
+                            to={`/user/${postUserId.toString()}`}>
                             <img src={profilePicture} alt="" className="post-profile-image" />
                             <span className="rightbar-online"></span>
 
@@ -155,14 +154,14 @@ export default function Post({ _id, image, desc, username, postUserId, profilePi
                     </div>
                 </div>
                 <div className="post-center">
-                      {desc.length > 700 ?(
-                       
-       <span style={{cursor:"pointer"}} className="post-desc" onClick ={() =>setShowMore(!showMore)}>
-        {showMore ?   `${desc} ...See Less`:  `${desc.substr(0,700)} ...See More`}
-                 </span>
+                    {desc.length > 700 ? (
 
-                      )   
-                      : <span className="post-desc">{desc}</span>}
+                        <span style={{ cursor: "pointer" }} className="post-desc" onClick={() => setShowMore(!showMore)}>
+                            {showMore ? `${desc} ...See Less` : `${desc.substr(0, 700)} ...See More`}
+                        </span>
+
+                    )
+                        : <span className="post-desc">{desc}</span>}
                     <img src={image} alt="" className="post-image" />
 
                 </div>
@@ -183,12 +182,12 @@ export default function Post({ _id, image, desc, username, postUserId, profilePi
                     </div>
                     <div className="post-bottom-right">
                         <span className="post-comment-text">{comments > 1 ? `${comments} comments` :
-                        `${comments} comment` } </span>
+                            `${comments} comment`} </span>
                     </div>
                 </div>
                 <Link to={`/post/${_id}`}>
-                
-                <div className="add-comment"><i className="fa fa-comments"></i> Add Comment</div>
+
+                    <div className="add-comment"><i className="fa fa-comments"></i> Add Comment</div>
                 </Link>
 
             </div>
@@ -196,6 +195,6 @@ export default function Post({ _id, image, desc, username, postUserId, profilePi
         </div>
 
 
-        
+
     </>
 }
