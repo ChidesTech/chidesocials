@@ -35,7 +35,7 @@ router.post("/",isAuth, async (req, res)=>{
     } catch (error) {
         res.status(500).send(error)
     }
-
+ 
 })
 router.get("/:id",isAuth, async (req, res)=>{
    
@@ -44,7 +44,7 @@ router.get("/:id",isAuth, async (req, res)=>{
             members: {$in : [req.params.id]}
         } ).sort({updatedAt : -1})
         res.status(200).send(conversation);
-        console.log(conversation);     
+        // console.log(conversation);     
     } catch (error) {
         res.status(500).send(error)
     }

@@ -2,7 +2,7 @@ const express = require("express");
 const router = express.Router();
 const {isAuth} = require("../middlewares/utils");
 const { getUsers, getUser, registerUser, loginUser, 
-    updateUser, deleteUser, getUserFollowers, getFollowers,
+    updateUser, deleteUser, getUserFollowers, getFollowers, getFollowings,
      followUser, unfollowUser } = require("../controllers/userController");
 
 //Get All Users
@@ -18,7 +18,9 @@ router.put("/:id",isAuth, updateUser)
 //Delete a user
 router.delete("/:id",isAuth, deleteUser );
 //get all followers
-router.get("/followers/:id",isAuth, getFollowers)
+router.get("/followers/:id",isAuth, getFollowers);
+//get all followings
+router.get("/followings/:id",isAuth, getFollowings)
 //Get user FOllowers
 router.get("/:id/followers",isAuth, getUserFollowers );
 //follow a user

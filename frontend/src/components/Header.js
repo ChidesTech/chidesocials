@@ -80,11 +80,11 @@ export default function Header(props) {
 
                         <span className="header-icon-badge">1</span>
                     </Link>
-                    <a className="header-icon-item h500" href="/chat">
+                    <Link className="header-icon-item h500" to="/chat">
 
                         <Chat />
                         <span className="header-icon-badge">1</span>
-                    </a>
+                    </Link>
                     <span onClick={toggleMode} className="header-icon-item h500 moon-icon"  >
 
                         <i style={{ fontSize: "1.2rem" }} className="fa fa-moon"></i>
@@ -106,11 +106,11 @@ export default function Header(props) {
 
     <Search/>
 </Link>
-<a className="header-icon-item  " href="/chat">
+<Link className="header-icon-item  " to="/chat">
 
     <Chat />
     <span className="header-icon-badge">1</span>
-</a>
+</Link>
 
 </div>
 

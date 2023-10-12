@@ -63,20 +63,7 @@ export default function Userspage() {
 
 
 
-    // async function getUserFollowers(userToFollow) {
-    //     try {
-    //         const { data } = await http.get(`/users/${userToFollow}/followers`)
-
-    //         // setUserFollowers(data);
-
-    //     } catch (error) {
-    //         error.response && error.response.data.message
-    //             ? console.log(error.response.data.message)
-    //             : console.log(error.message);
-
-    //     }
-
-    // }
+   
 
     async function followUser(userToFollow, usernameToFollow) {
         try {
@@ -156,7 +143,7 @@ export default function Userspage() {
                                             <div>
                                                 {!user.followers.includes(userId) && <button style={{ marginLeft: ".5rem" }} onClick={() => followUser(user._id, user.username)} className="btn-sm btn-outline-green mb-2">Follow </button>}
                                                 {user.followers.includes(userId) && <button style={{ marginLeft: ".5rem" }} onClick={() => unfollowUser(user._id, user.username)} className="btn-sm btn-green mb-2">Unfollow </button>}
-                                                <Link className="btn-sm btn-green ms-2 pt-2 pb-2 ps-3 pe-3" to={`/chat-user/${user._id}`}>
+                                                <Link className="btn-sm btn-green ms-2 pt-2 pb-2 ps-3 pe-3" to={{ pathname:'/chat', state:{ id: user._id } }}>
                                                     <i className="fas fa-comment-dots"></i>
                                                 </Link>
                                             </div>

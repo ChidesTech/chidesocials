@@ -75,7 +75,7 @@ exports.addComment =  async(req, res)=>{
          await comment.save();
           post.numComments += 1;     
           await post.save(); 
-          console.log(post);          
+        //   console.log(post);          
         res.status(200).send({success:"Product Updated Successfully"})
     } catch (error) {
         res.status(500).json(error);
@@ -170,7 +170,7 @@ exports.getPost = async(req, res)=>{
     try {
         const post = await Post.findById(req.params.id).populate("user");
         const comments = await Comment.find({post : req.params.id }).populate("user", "_id  profilePicture username");
-        console.log(comments)
+        // console.log(comments)
         res.status(200).send({post, comments})
         
     } catch (error) {

@@ -6,12 +6,12 @@ import UserOnlineInfo from "../components/UserOnlineInfo";
 import "./ChatPage.css";
 import { useEffect, useRef, useState } from "react";
 import http from "../http-common";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import Bottombar from "../components/Bottombar";
-import { io } from "socket.io-client";
 import Swal from "sweetalert2";
 import { Editor } from "react-draft-wysiwyg";
 import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
+import openSocket from 'socket.io-client';
 export default function ChatPage(props) {
     const [conversations, setConversations] = useState([]);
     const [currentChat, setCurrentChat] = useState(null);
@@ -23,10 +23,15 @@ export default function ChatPage(props) {
     const [onlineUsers, setOnlineUsers] = useState([]);
     const socket = useRef();
     const userInfo = JSON.parse(localStorage.getItem("userInfo"));
+    const location = useLocation();
+    const [receiverId, setReceiverId] = useState(location?.state?.id || null);
+    const [showBottomBar, setShowBottomBar] = useState(true)
+
+
 
 
     useEffect(() => {
-        socket.current = io("ws://localhost:8000");
+        socket.current = openSocket('http://localhost:8000');
         socket.current.on("getMessage", data => {
             setArrivalMessage({
                 sender: data.senderId,
@@ -47,16 +52,17 @@ export default function ChatPage(props) {
         //Send the user to the socket server
         socket.current.emit("addUser", user._id);
         //Get online/connected users from the socket server
-        socket.current.on("getUsers", users => {
-            // console.log(users);
-            setOnlineUsers(user.followings.filter(x => users.some(u => u.userId === x)))
+        socket.current.on("getUsers", async (users) => {
+            const loggedInUser = await getUser();
+            const friendlist = [...loggedInUser.followings];
+            setOnlineUsers(friendlist.filter(x => users.some(u => u.userId === x._id)))
         });
-    }, [user]);
+    }, []);
 
     const getConversations = async (userId) => {
         try {
             // setLoading(true)
-            const { data } = await http.get(`/conversations/${userId}`, {
+            const { data } = await http.get(`/conversations/${userId}/`, {
                 headers: {
                     Authorization: `Bearer ${userInfo.token}`,
                 }
@@ -101,14 +107,14 @@ export default function ChatPage(props) {
         //Emit message to the receiver
         const user = JSON.parse(localStorage.getItem("userInfo"));
         let receiverId = currentChat.members.find(x => x !== user._id);
-        console.log(receiverId);
+        // console.log(receiverId);
         socket.current.emit("sendMessage", {
             senderId: user._id,
             receiverId,
             text: newMessage
         })
         try {
-            const { data } = await http.post(`/messages`, {
+            const { data } = await http.post(`/messages/`, {
                 sender: user._id,
                 text: newMessage, conversationId: currentChat._id
             }, {
@@ -127,13 +133,32 @@ export default function ChatPage(props) {
     }
 
     function showConversation(conversation) {
+        setFriend({});
         setCurrentChat(conversation);
         getFriend(
             conversation.members.find(x => x !== user._id)
         )
+        setShowBottomBar(false);
         if (window.innerWidth <= 850) {
             document.getElementById("menu").style.display = "none";
             document.getElementById("box").style.display = "block";
+        }
+    }
+
+    async function getUser() {
+        try {
+            const { data } = await http.get("/users/" + user._id,
+                {
+                    headers: {
+                        Authorization: `Bearer ${userInfo.token}`,
+                    }
+                });
+            return data;
+
+        } catch (error) {
+            error.response && error.response.data.message
+                ? Swal.fire("Error", error.response.data.message, "error")
+                : Swal.fire("Error", error.message, "error");
         }
     }
 
@@ -164,6 +189,35 @@ export default function ChatPage(props) {
         arrivalMessage && currentChat?.members.includes(arrivalMessage.sender) && setMessages(prev => [...prev, arrivalMessage]);
     }, [arrivalMessage, currentChat])
 
+
+    //FIRST CHAT CREATION
+    async function createConversation(senderId, receiverId) {
+
+        try {
+            const { data } = await http.post("/conversations", { senderId, receiverId }, {
+                headers: {
+                    Authorization: `Bearer ${userInfo.token}`,
+                }
+            });
+            showConversation(data.conversation);
+            // setFriend(data.receiver);
+            setReceiverId(null)
+
+
+        } catch (error) {
+            error.response && error.response.data.message
+                ? Swal.fire("Error", error.response.data.message, "error")
+                : Swal.fire("Error", error.message, "error");
+        }
+    }
+
+    useEffect(() => {
+        // getFriend()
+        receiverId && createConversation(user._id, receiverId);
+        receiverId && setShowBottomBar(false);
+    }, [])
+
+
     const getFriend = async (friendId) => {
         try {
             const { data } = await http.get(`/users/${friendId}`, {
@@ -180,6 +234,17 @@ export default function ChatPage(props) {
         }
 
     }
+
+    function closeChat(){
+        setCurrentChat(null);
+        setShowBottomBar(true);
+
+        if (window.innerWidth <= 850) {
+            document.getElementById("menu").style.display = "block";
+            document.getElementById("box").style.display = "none";
+        }
+    }
+
 
     return <>
         <Header />
@@ -204,12 +269,13 @@ export default function ChatPage(props) {
                     {!currentChat ? <span className="startChat">Open up a conversation or start a new chat</span> :
                         <> <div className="chat-box-top">
                             <div className="chat-box-user-info">
-                                {/* <UserOnlineInfo friend={friend && friend} /> */}
+
 
                             </div>
                             <div className="message-margin-top">
                                 {messages.length === 0 ? <span className="startChat">Say Hi to start a conversation</span> :
-                                    <div className='pb-44 pt-20 containerWrap'>
+                                    <div className='pb-44 pt-10 containerWrap'>
+                                       <UserOnlineInfo closeChat={closeChat} friend={friend}></UserOnlineInfo>
                                         {messages.map(message => {
 
                                             return <div ref={scrollToBottom}>
@@ -223,7 +289,7 @@ export default function ChatPage(props) {
                             </div>
 
                         </div>
-                           
+
 
                             <div className="chat-box-bottom" >
                                 <textarea value={newMessage} onChange={e => setNewMessage(e.target.value)} className="chat-message-input  ps-2 pt-1" placeholder="Write your message"></textarea>
@@ -241,11 +307,12 @@ export default function ChatPage(props) {
                     <h5 style={{ marginBottom: ".5rem" }}>Online Friends</h5>
                     <OnlineChat onlineUsers={onlineUsers} setCurrentChat={setCurrentChat}
                         currentUserId={user._id} />
+
                 </div>
             </div>
 
         </div>
 
-        <Bottombar />
+{showBottomBar &&          <Bottombar />}
     </>
 }

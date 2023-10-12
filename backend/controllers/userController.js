@@ -16,7 +16,7 @@ exports.getUser = async (req, res) => {
 
     if (!user) {
         res.status(500).json({ message: "The user wasn't found" });
-        console.log({ message: "The user wasn't found" });
+        // console.log({ message: "The user wasn't found" });
         return;
     }
     const photos = await File.find({user: req.params.id, type : "photo"})
@@ -129,9 +129,15 @@ exports.deleteUser = async (req, res) => {
 
 
 exports.getFollowers =  async (req, res) => {
+    const user = await User.findById(req.params.id).populate("followers");
+    const followers = user.followers;
+    res.status(200).send(followers);
+
+}
+exports.getFollowings =  async (req, res) => {
     const user = await User.findById(req.params.id);
-    const followersId = user.followers;
-    res.status(200).send(followersId);
+    const followingsId = user.followings;
+    res.status(200).send(followingsId);
 
 }
 
@@ -166,7 +172,7 @@ exports.followUser =  async (req, res) => {
         }
     } else {
         res.status(403).json("This action is not allowed");
-        console.log("This action is not allowed");
+        // console.log("This action is not allowed");
     }
 }
 

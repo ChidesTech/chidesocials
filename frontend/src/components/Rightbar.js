@@ -6,7 +6,8 @@ import Swal from "sweetalert2";
 
 
 export default function Rightbar({ page, id, user, followers, followings, photos }) {
-    console.log(user)
+
+    let userInfo = JSON.parse(localStorage.getItem("userInfo"));
 
     const history = useHistory()
     useEffect(() => {
@@ -22,13 +23,10 @@ export default function Rightbar({ page, id, user, followers, followings, photos
 
     }, [history])
 
-
-
-
-
     const HomeRightBar = () => {
+        const [followers, setFollowers] = useState([]);
         useEffect(() => {
-            let userInfo = JSON.parse(localStorage.getItem("userInfo"));
+
 
             if (!userInfo) {
                 history.push("/login");
@@ -38,7 +36,31 @@ export default function Rightbar({ page, id, user, followers, followings, photos
 
 
 
-        }, [history])
+        }, [history]);
+
+        async function getFollowers(currentUserId) {
+            try {
+                const { data } = await http.get("/users/followers/" + currentUserId,
+                    {
+                        headers: {
+                            Authorization: `Bearer ${userInfo.token}`,
+                        }
+                    });
+                setFollowers(data);
+
+
+
+            } catch (error) {
+                error.response && error.response.data.message
+                    ? Swal.fire("Error", error.response.data.message, "error")
+                    : Swal.fire("Error", error.message, "error");
+            }
+
+        }
+
+        useEffect(() => {
+            getFollowers(userInfo._id);
+        }, []);
 
 
 
@@ -48,79 +70,22 @@ export default function Rightbar({ page, id, user, followers, followings, photos
                 <span className="birthday-text"> <b>Chides Tech</b> and 3 others have birthdays today</span>
             </div>
             <img src="/images/ecommerce1.jpg" alt="" className="rightbar-ad" />
-            <h4 className="online-friends">Online Friends</h4>
+            <h4 className="online-friends">Recent Followers</h4>
             <ul className="rightbar-friendlist">
+                {followers.map(follower => {
+                    return <Link to={`/user/${follower._id}`} style={{ textDecoration: "none", color : "gray"}}>
+                        <li className="rightbar-friend">
+                            <div className="rightbar-profileimage-container">
+                                <img src={follower.profilePicture && follower.profilePicture} alt="" className="rightbar-profile-image" />
+                                <span className="rightbar-online"></span>
+                            </div>
+                            <span className="rightbar-username">{follower.username}</span>
+                        </li>
+                    </Link>
+                })}
 
-                <li className="rightbar-friend">
-                    <div className="rightbar-profileimage-container">
-                        <img src="/images/team-1.jpg" alt="" className="rightbar-profile-image" />
-                        <span className="rightbar-online"></span>
-                    </div>
-                    <span className="rightbar-username">Sharon George</span>
-                </li>
-                <li className="rightbar-friend">
-                    <div className="rightbar-profileimage-container">
-                        <img src="/images/team-2.jpg" alt="" className="rightbar-profile-image" />
-                        <span className="rightbar-online"></span>
-                    </div>
-                    <span className="rightbar-username">Blake Lively</span>
-                </li>
-                <li className="rightbar-friend">
-                    <div className="rightbar-profileimage-container">
-                        <img src="/images/team-3.jpg" alt="" className="rightbar-profile-image" />
-                        <span className="rightbar-online"></span>
-                    </div>
-                    <span className="rightbar-username">Genevieve Ekeinde</span>
-                </li>
-                <li className="rightbar-friend">
-                    <div className="rightbar-profileimage-container">
-                        <img src="/images/team-4.jpg" alt="" className="rightbar-profile-image" />
-                        <span className="rightbar-online"></span>
-                    </div>
-                    <span className="rightbar-username">Ralf Ragnick</span>
-                </li>
-                <li className="rightbar-friend">
-                    <div className="rightbar-profileimage-container">
-                        <img src="/images/team-5.jpg" alt="" className="rightbar-profile-image" />
-                        <span className="rightbar-online"></span>
-                    </div>
-                    <span className="rightbar-username">Jin Sun Park</span>
-                </li>
-                <li className="rightbar-friend">
-                    <div className="rightbar-profileimage-container">
-                        <img src="/images/team-8.jpg" alt="" className="rightbar-profile-image" />
-                        <span className="rightbar-online"></span>
-                    </div>
-                    <span className="rightbar-username">team-1 Nwosu</span>
-                </li>
-                <li className="rightbar-friend">
-                    <div className="rightbar-profileimage-container">
-                        <img src="/images/team-5.jpg" alt="" className="rightbar-profile-image" />
-                        <span className="rightbar-online"></span>
-                    </div>
-                    <span className="rightbar-username">team-1 Nwosu</span>
-                </li>
-                <li className="rightbar-friend">
-                    <div className="rightbar-profileimage-container">
-                        <img src="/images/team-6.jpg" alt="" className="rightbar-profile-image" />
-                        <span className="rightbar-online"></span>
-                    </div>
-                    <span className="rightbar-username">team-1 Nwosu</span>
-                </li>
-                <li className="rightbar-friend">
-                    <div className="rightbar-profileimage-container">
-                        <img src="/images/team-7.jpg" alt="" className="rightbar-profile-image" />
-                        <span className="rightbar-online"></span>
-                    </div>
-                    <span className="rightbar-username">team-1 Nwosu</span>
-                </li>
-                <li className="rightbar-friend">
-                    <div className="rightbar-profileimage-container">
-                        <img src="/images/team-8.jpg" alt="" className="rightbar-profile-image" />
-                        <span className="rightbar-online"></span>
-                    </div>
-                    <span className="rightbar-username">team-1 Nwosu</span>
-                </li>
+
+
 
 
 
@@ -276,23 +241,23 @@ export default function Rightbar({ page, id, user, followers, followings, photos
             </div>
 
             <div className="rightbar-followings">
-               {
-                photos && photos.map(photo =>{
-                    return <Link to={`/post/${photo.post}`} className="rightbar-following">
-                    <img src={photo.url} alt="" className="rightbar-following-image" />
-                    {/* <span className="rightbar-following-name">Margot Robbie</span> */}
-                </Link>
-                })
-               }  
+                {
+                    photos && photos.map(photo => {
+                        return <Link to={`/post/${photo.post}`} className="rightbar-following">
+                            <img src={photo.url} alt="" className="rightbar-following-image" />
+                            {/* <span className="rightbar-following-name">Margot Robbie</span> */}
+                        </Link>
+                    })
+                }
             </div>
             <div className="followers-followings">
-                    <div onClick={() => setFollowersFollowings("followers")} className={followersFollowings === "followers" && "followers-followings-active"}>Followers</div>
-                    <div onClick={() => setFollowersFollowings("followings")} className={followersFollowings === "followings" && "followers-followings-active"}>Followings</div>
-               
-                </div>
-                <br />
-                {
-                    followersFollowings === "followers" && <><h4 className="rightbar-title">All Followers</h4>
+                <div onClick={() => setFollowersFollowings("followers")} className={followersFollowings === "followers" && "followers-followings-active"}>Followers</div>
+                <div onClick={() => setFollowersFollowings("followings")} className={followersFollowings === "followings" && "followers-followings-active"}>Followings</div>
+
+            </div>
+            <br />
+            {
+                followersFollowings === "followers" && <><h4 className="rightbar-title">All Followers</h4>
                     <ul className="rightbar-friendlist">
                         {followers && followers.map(follower => {
                             return <li className="rightbar-friend">
@@ -304,25 +269,25 @@ export default function Rightbar({ page, id, user, followers, followings, photos
                             </li>
                         })}
                     </ul>
-                    </>
-                }
-            
+                </>
+            }
+
             {
                 followersFollowings === "followings" && <>
-                <h4 className="rightbar-title">All Followings</h4>
-            <ul className="rightbar-friendlist">
-                {followings && followings.map(following => {
-                    return <li className="rightbar-friend">
-                        <div className="rightbar-profileimage-container">
-                            <img src={following.profilePicture} alt="" className="rightbar-profile-image" />
-                            {/* <span className="rightbar-online"></span> */}
-                        </div>
-                        <span className="rightbar-username">{following.username}</span>
-                    </li>
-                })}
-            </ul></>
+                    <h4 className="rightbar-title">All Followings</h4>
+                    <ul className="rightbar-friendlist">
+                        {followings && followings.map(following => {
+                            return <li className="rightbar-friend">
+                                <div className="rightbar-profileimage-container">
+                                    <img src={following.profilePicture} alt="" className="rightbar-profile-image" />
+                                    {/* <span className="rightbar-online"></span> */}
+                                </div>
+                                <span className="rightbar-username">{following.username}</span>
+                            </li>
+                        })}
+                    </ul></>
             }
-            
+
             <hr />
         </>
     }
@@ -334,11 +299,11 @@ export default function Rightbar({ page, id, user, followers, followings, photos
         <div className="rightbar-wrapper">
             {page === "home" && <HomeRightBar />}
             {page === "profile" && <ProfileRightBar profile="profile" user={user}
-            followers={followers} followings={followings}
-             />}
+                followers={followers} followings={followings}
+            />}
             {page === "user-profile" && <ProfileRightBar profile="user-profile" user={user} id={id}
-            followers={followers} followings={followings}
-             />}
+                followers={followers} followings={followings}
+            />}
         </div>
     </div>
 }
