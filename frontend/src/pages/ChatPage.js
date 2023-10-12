@@ -185,7 +185,7 @@ export default function ChatPage(props) {
     //Scroll to the last message sent
     useEffect(() => {
         scrollToBottom.current?.scrollIntoView({ behavior: "smooth" })
-    }, [messages])
+    }, [loadingMessages])
 
     // Refresh messages in real time 
     useEffect(() => {
@@ -276,12 +276,12 @@ export default function ChatPage(props) {
 
                             </div>
                             <div className="message-margin-top">
-                                {loadingMessages ? <span className="startChat text-2xl">Loading Messages ...</span> : messages.length === 0 ? <span className="startChat">Say Hi to start a conversation</span> :
+                                {loadingMessages ? <span className="startChat text-1xl">Loading Messages . . .</span> : messages.length === 0 ? <span className="startChat">Say Hi to start a conversation</span> :
                                     <div className='pb-44 pt-10 containerWrap'>
                                        <UserOnlineInfo closeChat={closeChat} friend={friend}></UserOnlineInfo>
                                         {messages.map(message => {
 
-                                            return <div className="mt-5" ref={scrollToBottom}>
+                                            return <div ref={scrollToBottom}>
 
                                                 <Message  friend={friend} mine={message.sender === user._id} message={message} />
                                             </div>
@@ -317,5 +317,6 @@ export default function ChatPage(props) {
         </div>
 
 {showBottomBar &&          <Bottombar />}
+<Bottombar />
     </>
 }
