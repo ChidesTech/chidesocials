@@ -83,7 +83,7 @@ export default function ChatPage(props) {
 
     }
     const getMessages = async () => {
-        setLoadingMessages(true)
+       
         try {
             const { data } = await http.get(`/messages/${currentChat._id}`, {
                 headers: {
@@ -91,7 +91,6 @@ export default function ChatPage(props) {
                 }
             });
             setMessages(data);
-            setLoadingMessages(false);
 
         } catch (error) {
             error.response && error.response.data.message
@@ -104,7 +103,10 @@ export default function ChatPage(props) {
     const sendMessage = async (e) => {
         e.preventDefault();
 
-        if (newMessage === "") {
+        let newMessageCopy = newMessage;
+        setNewMessage("");
+
+        if (newMessageCopy === "") {
             return;
         }
         //Emit message to the receiver
@@ -114,12 +116,12 @@ export default function ChatPage(props) {
         socket.current.emit("sendMessage", {
             senderId: user._id,
             receiverId,
-            text: newMessage
+            text: newMessageCopy
         })
         try {
             const { data } = await http.post(`/messages/`, {
                 sender: user._id,
-                text: newMessage, conversationId: currentChat._id
+                text: newMessageCopy, conversationId: currentChat._id
             }, {
                 headers: {
                     Authorization: `Bearer ${userInfo.token}`,
@@ -169,7 +171,7 @@ export default function ChatPage(props) {
     // Get all conversations
     useEffect(() => {
         getConversations(user._id);
-    }, [])
+    }, [user._id])
 
 
     //Get all messages
@@ -185,7 +187,7 @@ export default function ChatPage(props) {
     //Scroll to the last message sent
     useEffect(() => {
         scrollToBottom.current?.scrollIntoView({ behavior: "smooth" })
-    }, [loadingMessages])
+    }, [messages])
 
     // Refresh messages in real time 
     useEffect(() => {
@@ -276,7 +278,7 @@ export default function ChatPage(props) {
 
                             </div>
                             <div className="message-margin-top">
-                                {loadingMessages ? <span className="startChat text-1xl">Loading Messages . . .</span> : messages.length === 0 ? <span className="startChat">Say Hi to start a conversation</span> :
+                                {messages.length === 0 ? <span className="startChat">Say Hi to start a conversation</span> :
                                     <div className='pb-44 pt-10 containerWrap'>
                                        <UserOnlineInfo closeChat={closeChat} friend={friend}></UserOnlineInfo>
                                         {messages.map(message => {
