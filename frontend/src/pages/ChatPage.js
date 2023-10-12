@@ -25,7 +25,8 @@ export default function ChatPage(props) {
     const userInfo = JSON.parse(localStorage.getItem("userInfo"));
     const location = useLocation();
     const [receiverId, setReceiverId] = useState(location?.state?.id || null);
-    const [showBottomBar, setShowBottomBar] = useState(true)
+    const [showBottomBar, setShowBottomBar] = useState(true);
+    const [loadingMessages, setLoadingMessages] = useState(true);
 
 
 
@@ -82,6 +83,7 @@ export default function ChatPage(props) {
 
     }
     const getMessages = async () => {
+        setLoadingMessages(true)
         try {
             const { data } = await http.get(`/messages/${currentChat._id}`, {
                 headers: {
@@ -89,6 +91,7 @@ export default function ChatPage(props) {
                 }
             });
             setMessages(data);
+            setLoadingMessages(false);
 
         } catch (error) {
             error.response && error.response.data.message
@@ -236,7 +239,7 @@ export default function ChatPage(props) {
     }
 
     function closeChat(){
-        setCurrentChat(null);
+       setMessages([]);
         setShowBottomBar(true);
 
         if (window.innerWidth <= 850) {
@@ -253,7 +256,7 @@ export default function ChatPage(props) {
                 {/* <Link to="/users" className="m-1 btn-sm pt-2 pb-2 btn-green inline">New Conversation</Link> */}
                 <div className="menu-wrapper ">
                     {/* <input type="text" placeholder="Search for friends" className="menu-input" /> */}
-                    <h5 className="mt-3 pt-3">Conversations</h5>
+                    <h5 className="mt-5 pt-3">Conversations</h5>
 
                     {loading ? <div className="m-2">Fetching Conversations ...</div> : conversations.length === 0 ? <div className="alert alert-success p-2">No Conversation Started</div> :
                         conversations.map(conversation => {
@@ -273,14 +276,14 @@ export default function ChatPage(props) {
 
                             </div>
                             <div className="message-margin-top">
-                                {messages.length === 0 ? <span className="startChat">Say Hi to start a conversation</span> :
+                                {loadingMessages ? <span className="startChat text-2xl">Loading Messages ...</span> : messages.length === 0 ? <span className="startChat">Say Hi to start a conversation</span> :
                                     <div className='pb-44 pt-10 containerWrap'>
                                        <UserOnlineInfo closeChat={closeChat} friend={friend}></UserOnlineInfo>
                                         {messages.map(message => {
 
-                                            return <div ref={scrollToBottom}>
+                                            return <div className="mt-5" ref={scrollToBottom}>
 
-                                                <Message friend={friend} mine={message.sender === user._id} message={message} />
+                                                <Message  friend={friend} mine={message.sender === user._id} message={message} />
                                             </div>
                                         })}
                                     </div>
