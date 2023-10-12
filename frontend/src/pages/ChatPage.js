@@ -317,6 +317,5 @@ export default function ChatPage(props) {
         </div>
 
 {showBottomBar &&          <Bottombar />}
-<Bottombar />
     </>
 }
