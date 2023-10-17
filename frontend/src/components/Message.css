@@ -19,10 +19,11 @@
 
 .message-text{
     padding: 5px;
-    border-radius: 15px;
+    border-radius: 5px;
     background-color: #198754;
     color: white;
     max-width: 300px;
+    white-space: pre-line;
 
   
 }

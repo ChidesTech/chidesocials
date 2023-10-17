@@ -1,6 +1,6 @@
 import "./Message.css"
-import { format } from "timeago.js";
 import { MoreVert } from "../../node_modules/@material-ui/icons/index";
+import { format } from "date-fns";
 export default function Message({ mine, message , friend}) {
 
     const userInfo = JSON.parse(localStorage.getItem("userInfo"));
@@ -44,7 +44,7 @@ export default function Message({ mine, message , friend}) {
 
         </div>
         <div className="message-bottom mt-1 mb-4">
-            {format(message.createdAt)}
+            {format(new Date(message?.createdAt), "eeee  dd/MM/yy  hh:mm a")}
         </div>
     </div>
 }

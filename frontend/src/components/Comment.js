@@ -2,7 +2,7 @@ import { MoreVert } from "../../node_modules/@material-ui/icons/index";
 import "./Comment.css";
 import { Link } from "react-router-dom";
 import Swal from "sweetalert2";
-import {format} from "timeago.js";
+import {format} from "date-fns";
 import { useState } from "react";
 import http from "../http-common";
 const swalWithBootstrapButtons = Swal.mixin({
@@ -128,7 +128,7 @@ export default function Comment({ _id, image, text, username, commentUserId, pro
 
                 <div className="post-top">
                     <div className="post-top-left">
-                        <Link style={{ textDecoration: "none" }}
+                        <Link style={{ textDecoration: "none", display : "flex" }}
                         
                          to={`/user/${commentUserId.toString()}`}
                          >
@@ -137,7 +137,7 @@ export default function Comment({ _id, image, text, username, commentUserId, pro
 
                             <span className="post-username">{username}</span>
                         </Link>
-                        <span className="post-date">{format(createdAt)}</span>
+                        <span className="post-date">{format(new Date(createdAt), "dd/MM/yyyy hh:mm a")}</span>
                     </div>
                     <div className="post-top-right">
 

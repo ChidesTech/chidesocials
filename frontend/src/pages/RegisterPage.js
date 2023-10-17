@@ -13,6 +13,7 @@ export default function RegisterPage() {
   const [username , setUsername] = useState("");
   const [password , setPassword] = useState("");
   const [confirmPassword , setConfirmPassword] = useState("");
+  const [loading, setLoading] = useState(false)
   const [error , setError] = useState("");
   const history = useHistory();
 
@@ -41,15 +42,21 @@ export default function RegisterPage() {
       setError("Passwords do not match");
       return;
     }
+    setLoading(true);
     try {
     await http.post("/users/register", {email, username, password})
+   
     Swal.fire("Registration Successful",`${username}, visit your email to confirm your account`, '', 'success')
     
    .then(() => history.push("/login")) 
+   setLoading(false);
     } catch (error) {
+
       error.response && error.response.data.message
       ? setError(error.response.data.message)
       : setError(error.message)
+    setLoading(false);
+
       
     }
   }

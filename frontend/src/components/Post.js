@@ -3,8 +3,8 @@ import "./Post.css";
 import http from "../http-common";
 import { Link } from "react-router-dom";
 import Swal from "sweetalert2";
-import { format } from "timeago.js";
 import { useState } from "react";
+import { format } from "date-fns";
 const swalWithBootstrapButtons = Swal.mixin({
     customClass: {
         confirmButton: 'btn btn-success',
@@ -135,7 +135,7 @@ export default function Post({ _id, image, desc, username, postUserId, profilePi
 
                             <span className="post-username">{username}</span>
                         </Link>
-                        <span className="post-date">{format(createdAt)}</span>
+                        <span className="post-date">{format(new Date(createdAt), "dd/MM/yyyy hh:mm a")}</span>
                     </div>
                     <div className="post-top-right">
 

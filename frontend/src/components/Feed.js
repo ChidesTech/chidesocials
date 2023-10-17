@@ -255,14 +255,14 @@ export default function Feed(props) {
                     {users.map(user => {
                         if (user._id !== userId) {
                             return <li key={user._id} className="sidebar-friend">
-                                <Link style={{ textDecoration: "none", color: "black" }} to={`/user/${user._id}`}>
+                                <Link style={{ textDecoration: "none", color: "black",display : "flex" }} to={`/user/${user._id}`}>
                                     <img src={user.profilePicture || "/images/profile.png"} alt="" className="sidebar-friend-image" />
                                     <span className="sidebar-friend-name">{user.username}</span>
                                 </Link>
 
                                 {/* {!user.followers.includes(userId)    && <button style={{marginLeft:".5rem"}} onClick={()=>followUser(user._id, user.username)} className="btn-sm btn-outline-green mb-2">Follow </button>} */}
                                 {/* { user.followers.includes(userId)    && <button style={{marginLeft:".5rem"}} onClick={()=>unfollowUser(user._id, user.username)} className="btn-sm btn-green mb-2">Unfollow </button>} */}
-                                <Link className="btn-sm btn-green ms-2 pt-2 pb-2 ps-3 pe-3" to={`/chat-user/${user._id}`}>
+                                <Link className="btn-sm btn-green ms-2 pt-2 pb-2 ps-3 pe-3" to={{ pathname:'/chat', state:{ id: user._id } }}>
                                     <i className="fas fa-comment-dots"></i>
                                 </Link>
                             </li>
